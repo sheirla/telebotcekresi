@@ -2,6 +2,7 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import requests
 import urllib.request
+import time
 
 urlcekongkir = "https://pluginongkoskirim.com/cek-tarif-ongkir/front/resi-amp?__amp_source_origin=https%3A%2F%2Fpluginongkoskirim.com"
 urlyoutube = "http://sosmeeed.herokuapp.com:80/api/youtube/video"
@@ -90,7 +91,8 @@ def youtubestarted(message):
     datayoutube = responseyoutube.json()
       
     vide_urlyt = datayoutube['data'][0]['video']['url']
-    bot.send_video(message.chat.id,vide_urlyt)
+    r = requests.get('http://tinyurl.com/api-create.php?url=' + vide_urlyt)
+    bot.send_message(message.chat.id,str(r.text))
 
 
-bot.polling()
+bot.polling(none_stop=True)
