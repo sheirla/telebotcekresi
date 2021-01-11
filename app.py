@@ -62,10 +62,35 @@ def twitterstarted(message):
     responsetwitter = requests.request("POST", urltwitter, headers=headerstwitter, data=payloadtwitter)
 
     datatwitter = responsetwitter.json()
-      
-    vide_urltwt = datatwitter['data']['data'][0]['link']
-    bot.send_video(message.chat.id,vide_urltwt)
+    
+    checkdata = datatwitter['success']
+    if checkdata == True:
+        vide_urltwt = datatwitter['data']['data'][0]['link']
+        bot.send_video(message.chat.id,vide_urltwt)
+    else:
+        bot.send_message(message.chat.id, 'URL yg anda masukan salah / tidak valid')
+        
 
+""" ================================================================================================== """
+@bot.message_handler(commands=['youtube'])
+def startyoutube(message):
+    global youtubeurl
+    sent2 = bot.send_message(message.chat.id, 'Input URL')
+    bot.register_next_step_handler(sent2, youtubestarted)
+
+def youtubestarted(message):
+    youtubeurl = (message.text)
+    
+    payloadyoutube='url='+youtubeurl
+    headersyt = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    responseyoutube = requests.request("POST", urlyoutube, headers=headersyt, data=payloadyoutube)
+
+    datayoutube = responseyoutube.json()
+      
+    vide_urlyt = datayoutube['data'][1]['video']['url']
+    bot.send_video(message.chat.id,vide_urlyt)
 
 
 bot.polling()
