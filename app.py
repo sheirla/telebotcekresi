@@ -89,7 +89,7 @@ def youtubestarted(message):
 
     datayoutube = responseyoutube.json()
       
-    vide_urlyt = datayoutube['data'][1]['video']['url']
+    vide_urlyt = datayoutube['data'][0]['video']['url']
     bot.send_video(message.chat.id,vide_urlyt)
 
 
