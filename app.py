@@ -123,7 +123,7 @@ def tiktokstarted(message):
     datavideomentah = soup.find("a",{"class":"abutton is-success is-fullwidth"})
     datavideojadi = datavideomentah['href']
     print(datavideojadi)
-    req = Request(datavideojadi, headers={'User-Agent': 'Mozilla/5.0'})
+    req = Request(str(datavideojadi), headers={'User-Agent': 'Mozilla/5.0'})
     
     f = open('out.mp4','wb')
     f.write(urlopen(req).read())
