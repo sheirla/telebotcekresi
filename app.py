@@ -1,13 +1,13 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import requests
-import urllib.request
-import time
+from urllib.request import Request, urlopen
+from bs4 import BeautifulSoup
 
 urlcekongkir = "https://pluginongkoskirim.com/cek-tarif-ongkir/front/resi-amp?__amp_source_origin=https%3A%2F%2Fpluginongkoskirim.com"
 urlyoutube = "http://sosmeeed.herokuapp.com:80/api/youtube/video"
 urltwitter = "http://sosmeeed.herokuapp.com:80/api/twitter/video"
-
+urltiktok = "https://ttdownloader.com/download_ajax/"
 
 bot = telebot.TeleBot("717811256:AAFpTRD8AZ90t6nqpayMvL5fpxG7ElFBf9c")
 tb = telebot.TeleBot("717811256:AAFpTRD8AZ90t6nqpayMvL5fpxG7ElFBf9c")
@@ -50,8 +50,8 @@ def botstarted(message):
 @bot.message_handler(commands=['twitter'])
 def starttwiter(message):
     global tiktokurl
-    sent2 = bot.send_message(message.chat.id, 'Input URL')
-    bot.register_next_step_handler(sent2, twitterstarted)
+    sent3 = bot.send_message(message.chat.id, 'Input URL')
+    bot.register_next_step_handler(sent3, twitterstarted)
 
 def twitterstarted(message):
     twitterurl = (message.text)
@@ -76,8 +76,8 @@ def twitterstarted(message):
 @bot.message_handler(commands=['youtube'])
 def startyoutube(message):
     global youtubeurl
-    sent2 = bot.send_message(message.chat.id, 'Input URL')
-    bot.register_next_step_handler(sent2, youtubestarted)
+    sent4 = bot.send_message(message.chat.id, 'Input URL')
+    bot.register_next_step_handler(sent4, youtubestarted)
 
 def youtubestarted(message):
     youtubeurl = (message.text)
@@ -91,8 +91,45 @@ def youtubestarted(message):
     datayoutube = responseyoutube.json()
       
     vide_urlyt = datayoutube['data'][0]['video']['url']
-    r = requests.get('http://tinyurl.com/api-create.php?url=' + vide_urlyt)
-    bot.send_message(message.chat.id,str(r.text))
+    req = Request(vide_urlyt, headers={'User-Agent': 'Mozilla/5.0'})
+    f = open('out.mp4','wb')
+    f.write(urlopen(req).read())
+    f.close()
+    bot.send_chat_action(message.chat.id, 'upload_video')
+    img = open('out.mp4', 'rb')
+    bot.send_video(message.chat.id, img, reply_to_message_id=message.message_id)
+    img.close()
+
+""" ================================================================================================== """
+@bot.message_handler(commands=['tiktok'])
+def starttiktok(message):
+    global tiktokurl
+    sent3 = bot.send_message(message.chat.id, 'Input URL')
+    bot.register_next_step_handler(sent3, tiktokstarted)
+
+def tiktokstarted(message):
+    tiktokurl = (message.text)
+    
+    payloadtiktok='url='+tiktokurl+'&token=2fd0de11cb3f0cf7d507ee33869e70709a3fd428744d8b5730d003776db98ebf'
+    headerstiktok = {
+    'cookie': '__cfduid=d1a139a4ce020c336adf781e99f63708b1610126210; _ga=GA1.2.620687099.1610126212; PHPSESSID=a21rud2fl8102849l1j2ft8hho; popCookie=1; _gid=GA1.2.33472925.1610426210; _gat_gtag_UA_117413493_7=1; __cfduid=d0775b97e65b5dfe79ba9f00b74f9c4d61610126424; PHPSESSID=6q6kp0ft6e2iv3gl5s1krroc6n',
+    'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    responsetiktok = requests.request("POST", urltiktok, headers=headerstiktok, data=payloadtiktok)
+
+    datatiktok = responsetiktok.text
+      
+    soup = BeautifulSoup(datatiktok, "html.parser")
+    datavideomentah = soup.find("a", attrs={"class": "download-link"})
+
+    req = Request(datavideomentah['href'], headers={'User-Agent': 'Mozilla/5.0'})
+    f = open('out.mp4','wb')
+    f.write(urlopen(req).read())
+    f.close()
+    bot.send_chat_action(message.chat.id, 'upload_video')
+    img = open('out.mp4', 'rb')
+    bot.send_video(message.chat.id, img, reply_to_message_id=message.message_id)
+    img.close()
 
 
 bot.polling(none_stop=True)
