@@ -102,12 +102,6 @@ def youtubestarted(message):
 
 """ ================================================================================================== """
 @bot.message_handler(commands=['tiktok'])
-def starttiktok(message):
-    global tiktokurl
-    sent3 = bot.send_message(message.chat.id, 'Input URL')
-    bot.register_next_step_handler(sent3, tiktokstarted)
-
-def tiktokstarted(message):
 def send_welcome(message):
 	bot.reply_to(message, "Sedang dalam perbaikan")
 
