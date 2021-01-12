@@ -101,7 +101,7 @@ def youtubestarted(message):
     img.close()
 
 """ ================================================================================================== """
-@bot.message_handler(commands=['tiktok')
+@bot.message_handler(commands=['tiktok'])
 def send_welcome(message):
 	bot.reply_to(message, "Sedang dalam perbaikan")
 
