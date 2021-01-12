@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 urlcekongkir = "https://pluginongkoskirim.com/cek-tarif-ongkir/front/resi-amp?__amp_source_origin=https%3A%2F%2Fpluginongkoskirim.com"
 urlyoutube = "http://sosmeeed.herokuapp.com:80/api/youtube/video"
 urltwitter = "http://sosmeeed.herokuapp.com:80/api/twitter/video"
-urltiktok = "https://ttdownloader.com/download_ajax/"
+urltiktok = "https://snaptik.app/action.php"
 
 bot = telebot.TeleBot("717811256:AAFpTRD8AZ90t6nqpayMvL5fpxG7ElFBf9c")
 tb = telebot.TeleBot("717811256:AAFpTRD8AZ90t6nqpayMvL5fpxG7ElFBf9c")
@@ -112,7 +112,7 @@ def tiktokstarted(message):
     
     payloadtiktok='url='+tiktokurl+'&token=2fd0de11cb3f0cf7d507ee33869e70709a3fd428744d8b5730d003776db98ebf'
     headerstiktok = {
-    'cookie': '__cfduid=d1a139a4ce020c336adf781e99f63708b1610126210; _ga=GA1.2.620687099.1610126212; PHPSESSID=a21rud2fl8102849l1j2ft8hho; popCookie=1; _gid=GA1.2.33472925.1610426210; _gat_gtag_UA_117413493_7=1; __cfduid=d0775b97e65b5dfe79ba9f00b74f9c4d61610126424; PHPSESSID=6q6kp0ft6e2iv3gl5s1krroc6n',
+    'cookie': '__cfduid=d33d3b6499977fe797170dbc8ec5309431610126208; __cflb=0H28vNadMLAyXKUf1Fe7hcf2dQRRDpKqwQZqnTjqcom; __gads=ID=4e6278d305e8c0b2-22ed10d597c5005b:T=1610126209:RT=1610126209:S=ALNI_MbX5ZJ6GMrDdCIE9LCgkcWSMSO6Bg; current_language=ID; PHPSESSID=vo1km7l3o55ira5ko14d21b3io; _gid=GA1.2.172905107.1610434680; __atssc=google%3B2; _gat=1; _gat_gtag_UA_162798444_8=1; _ga_2KT415JS53=GS1.1.1610434679.2.1.1610435206.60; _ga=GA1.1.188138072.1610126209; __atuvc=1%7C1%2C2%7C2; __atuvs=5ffd48781d044837001; __cflb=025XBJYGdEpTJNVqnGV9cshdcjdDhTekAYgBF19Urk735WnTwHVtXSsdFVkTJdpdqdXcKXD1tyUhr98KZBW4xT; current_language=ID',
     'Content-Type': 'application/x-www-form-urlencoded'
     }
     responsetiktok = requests.request("POST", urltiktok, headers=headerstiktok, data=payloadtiktok)
@@ -120,7 +120,7 @@ def tiktokstarted(message):
     datatiktok = responsetiktok.text
       
     soup = BeautifulSoup(datatiktok, "html.parser")
-    datavideomentah = soup.find("a", attrs={"class": "download-link"})
+    datavideomentah = soup.find("a", attrs={"class": "abutton is-success is-fullwidth"})
 
     req = Request(datavideomentah['href'], headers={'User-Agent': 'Mozilla/5.0'})
     f = open('out.mp4','wb')
