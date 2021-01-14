@@ -136,20 +136,7 @@ def youtubemp3started(message):
     bot.send_message(message.chat.id, 'Klik Download untuk mengunduh Manual', reply_to_message_id=message.message_id,  reply_markup=InlineKeyboardMarkup([
         [InlineKeyboardButton(text='Download mp3', url=''+vide_urlytmp3)],
     ]))
-
-    req = Request(vide_urlytmp3, headers={'User-Agent': 'Mozilla/5.0'})
-    bot.send_message(message.chat.id, 'Audio sedang di upload kepada klean..')
-    f = open('out.mp3','wb')
-    f.write(urlopen(req).read())
-    f.close()
-    bot.send_chat_action(message.chat.id, 'upload_audio')
-    mp3 = open('out.mp3', 'rb')
-    bot.send_audio(message.chat.id, mp3, reply_to_message_id=message.message_id)
-    bot.send_message(message.chat.id, 'Audio selesai terupload kepada klean..')
-    mp3.close()
-
  
-
 """ ================================================================================================== """
 
 """ ================================================================================================== """
