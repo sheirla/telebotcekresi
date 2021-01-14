@@ -9,10 +9,8 @@ from bs4 import BeautifulSoup
 urlcekongkir = "https://pluginongkoskirim.com/cek-tarif-ongkir/front/resi-amp?__amp_source_origin=https%3A%2F%2Fpluginongkoskirim.com"
 urlyoutube = "http://sosmeeed.herokuapp.com:80/api/youtube/video"
 urltwitter = "http://sosmeeed.herokuapp.com:80/api/twitter/video"
-urltiktok = "https://snaptik.app/action.php"
 
 bot = telebot.TeleBot("717811256:AAFpTRD8AZ90t6nqpayMvL5fpxG7ElFBf9c")
-tb = telebot.TeleBot("717811256:AAFpTRD8AZ90t6nqpayMvL5fpxG7ElFBf9c")
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -51,7 +49,6 @@ def botstarted(message):
 """ ================================================================================================== """
 @bot.message_handler(commands=['twitter'])
 def starttwiter(message):
-    global tiktokurl
     sent3 = bot.send_message(message.chat.id, 'Input URL')
     bot.register_next_step_handler(sent3, twitterstarted)
 
@@ -72,7 +69,6 @@ def twitterstarted(message):
         bot.send_video(message.chat.id,vide_urltwt)
     else:
         bot.send_message(message.chat.id, 'URL yg anda masukan salah / tidak valid')
-        
 
 """ ================================================================================================== """
 @bot.message_handler(commands=['youtube'])
@@ -103,7 +99,7 @@ def youtubestarted(message):
     bot.send_video(message.chat.id, img, reply_to_message_id=message.message_id)
     bot.send_message(message.chat.id, 'Video selesai terupload kepada klean..')
     img.close()
-
+    responseyoutube.close() 
 """ ================================================================================================== """
 
 @bot.message_handler(commands=['ytmp3'])
@@ -136,13 +132,55 @@ def youtubemp3started(message):
     bot.send_message(message.chat.id, 'Klik Download untuk mengunduh Manual', reply_to_message_id=message.message_id,  reply_markup=InlineKeyboardMarkup([
         [InlineKeyboardButton(text='Download mp3', url=''+vide_urlytmp3)],
     ]))
+
+    req = Request(vide_urlytmp3, headers={'User-Agent': 'Mozilla/5.0'})
+    bot.send_message(message.chat.id, 'Audio sedang di upload kepada klean..')
+    f = open('out.mp3','wb')
+    f.write(urlopen(req).read())
+    f.close()
+    bot.send_chat_action(message.chat.id, 'upload_audio')
+    mp3 = open('out.mp3', 'rb')
+    bot.send_audio(message.chat.id, mp3, reply_to_message_id=message.message_id)
+    bot.send_message(message.chat.id, 'Audio selesai terupload kepada klean..')
+    mp3.close()
+    responseyoutubemp3.close() 
  
-""" ================================================================================================== """
 
 """ ================================================================================================== """
 @bot.message_handler(commands=['tiktok'])
-def send_wellcome2(message):
-	bot.reply_to(message, "Sedang dalam perbaikan")
+def starttiktok(message):
+    global tiktokurl
+    sent3 = bot.send_message(message.chat.id, 'Input URL')
+    bot.register_next_step_handler(sent3, tiktokstarted)
 
+def tiktokstarted(message):
+    tiktokurl = (message.text)
+    urltiktok = "https://snaptik.app/action.php"
+    urltiktok2 = "https://snaptik.app/check_token.php"
+    payloadtiktok='url='+tiktokurl
+    headerstiktok = {
+     'Content-Type': 'application/x-www-form-urlencoded'
+    }
+
+    s = requests.Session()
+    s.post(urltiktok2)
+    responsetiktok = s.post(urltiktok, headers=headerstiktok, data=payloadtiktok)
+
+    datatiktok = responsetiktok.text
+      
+    soup = BeautifulSoup(datatiktok, "html.parser")
+    datavideomentah = soup.find("a",{"class":"abutton is-success is-fullwidth"})
+    datavideojadi = datavideomentah['href']
+    print(datavideojadi)
+    req = Request(datavideojadi, headers={'User-Agent': 'Mozilla/5.0'})
+    
+    f = open('out.mp4','wb')
+    f.write(urlopen(req).read())
+    f.close()
+    bot.send_chat_action(message.chat.id, 'upload_video')
+    img = open('out.mp4', 'rb')
+    bot.send_video(message.chat.id, img, reply_to_message_id=message.message_id)
+    img.close()
+    responsetiktok.close() 
 
 bot.polling(none_stop=True)
