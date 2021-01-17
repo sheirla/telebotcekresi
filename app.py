@@ -13,9 +13,13 @@ urltwitter = "http://sosmeeed.herokuapp.com:80/api/twitter/video"
 bot = telebot.TeleBot("717811256:AAFpTRD8AZ90t6nqpayMvL5fpxG7ElFBf9c")
 
 
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['start'])
 def send_welcome(message):
-	bot.reply_to(message, "Cari apa gan?")
+	bot.reply_to(message, "Cari apa gan? /help untuk melihat list command")
+
+@bot.message_handler(commands=[ 'help'])
+def send_welcome(message):
+	bot.reply_to(message, "List command bot: \n /cekresi - untuk cek resi \n /twitter - Twitter Video Downloader \n /tiktok - Download Video Tiktok Tanpa Watermark \n /youtube - Download Video Youtube \n /ytmp3 - Covert youtube ke mp3")
 
 
 """ ================================================================================================== """
