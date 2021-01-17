@@ -36,16 +36,19 @@ def botstarted(message):
     resi = (message.text)
     
     payload={'kurir': kurir,'resi': resi}
-    files=[]
-    response = requests.request("POST", urlcekongkir, data=payload, files=files)
+    response = requests.request("POST", urlcekongkir, data=payload)
     datakurir = response.json()
       
-    resi_kurir = datakurir['data']['detail']['code']
-    status_kurir = datakurir['data']['detail']['status']
-    lokasi_terakhir = datakurir['data']['detail']['history'][0]['position']
-    desc_terakhir = datakurir['data']['detail']['history'][0]['desc']
-    
-    bot.reply_to(message, "RESI : " + resi_kurir + "\nSTATUS : " + status_kurir + "\n===========================" "\nLokasi : " + lokasi_terakhir + "\nDESC : " + desc_terakhir)
+    try:
+        resi_kurir = datakurir['data']['detail']['code']
+        status_kurir = datakurir['data']['detail']['status']
+        lokasi_terakhir = datakurir['data']['detail']['history'][0]['position']
+        desc_terakhir = datakurir['data']['detail']['history'][0]['desc']
+        waktu_terakhir = datakurir['data']['detail']['history'][0]['time']
+        bot.reply_to(message, "RESI : " + resi_kurir + "\nSTATUS : " + status_kurir + "\n===========================" "\nLokasi : " + lokasi_terakhir + "\nDESC : " + desc_terakhir+ "\nWaktu : " + waktu_terakhir)
+    except:
+        check = datakurir['message']
+        bot.reply_to(message, check)
 """ ================================================================================================== """
 @bot.message_handler(commands=['twitter'])
 def starttwiter(message):
