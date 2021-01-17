@@ -110,49 +110,9 @@ def youtubestarted(message):
     img.close()
     responseyoutube.close() 
 """ ================================================================================================== """
-
 @bot.message_handler(commands=['ytmp3'])
-def startyoutubemp3(message):
-    global youtubemp3url
-    sent4 = bot.send_message(message.chat.id, 'Input URL')
-    bot.register_next_step_handler(sent4, youtubemp3started)
-
-def youtubemp3started(message):
-    youtubemp3url = (message.text)
-    
-    parsed = urlparse.urlparse(youtubemp3url)
-    checkurl = parse_qs(parsed.query).get('v')
-    if checkurl is None:
-        x = parsed.path
-        ytquery = x.replace("/", "")
-    else:
-        ytquery = parse_qs(parsed.query).get('v')[0]
-    
-    ytmp3url = "https://api.youtube-mp3.org.in/@audio/"+ytquery+"/?title="+ytquery
-    headersytmp3 = {
-    'Content-Type': 'application/json'
-    }
-    responseyoutubemp3 = requests.request("GET", ytmp3url, headers=headersytmp3)
-    print(responseyoutubemp3)
-    datayoutubemp3 = responseyoutubemp3.json()
-      
-    vide_urlytmp3 = datayoutubemp3['url']
-    print(vide_urlytmp3)
-    bot.send_message(message.chat.id, 'Klik Download untuk mengunduh Manual', reply_to_message_id=message.message_id,  reply_markup=InlineKeyboardMarkup([
-        [InlineKeyboardButton(text='Download mp3', url=''+vide_urlytmp3)],
-    ]))
-
-    req = Request(vide_urlytmp3, headers={'User-Agent': 'Mozilla/5.0'})
-    bot.send_message(message.chat.id, 'Audio sedang di upload kepada klean..')
-    f = open('out.mp3','wb')
-    f.write(urlopen(req).read())
-    f.close()
-    bot.send_chat_action(message.chat.id, 'upload_audio')
-    mp3 = open('out.mp3', 'rb')
-    bot.send_audio(message.chat.id, mp3, reply_to_message_id=message.message_id)
-    bot.send_message(message.chat.id, 'Audio selesai terupload kepada klean..')
-    mp3.close()
-    responseyoutubemp3.close() 
+def send_welcome(message):
+	bot.reply_to(message, "Sedang dalam perbaikan")
  
 
 """ ================================================================================================== """
