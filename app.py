@@ -49,7 +49,7 @@ def botstarted(message):
         lokasi_terakhir = datakurir['data']['detail']['history'][0]['position']
         desc_terakhir = datakurir['data']['detail']['history'][0]['desc']
         waktu_terakhir = datakurir['data']['detail']['history'][0]['time']
-	print('checking resi: '+resi_kurir)
+        print('checking resi: '+resi_kurir)
         bot.reply_to(message, "RESI : " + resi_kurir + "\nSTATUS : " + status_kurir + "\n===========================" "\nLokasi : " + lokasi_terakhir + "\nDESC : " + desc_terakhir+ "\nWaktu : " + waktu_terakhir)
     except:
         check = datakurir['message']
@@ -129,7 +129,6 @@ def youtubemp3started(message):
     else:
         ytquery = parse_qs(parsed.query).get('v')[0]
     
-    print(ytquery)
     ytmp3url = "https://api.youtube-mp3.org.in/@audio/"+ytquery+"/?title="+ytquery
     headersytmp3 = {
     'Content-Type': 'application/json'
