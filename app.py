@@ -15,7 +15,7 @@ bot = telebot.TeleBot("717811256:AAFpTRD8AZ90t6nqpayMvL5fpxG7ElFBf9c")
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-	bot.reply_to(message, "Golek opo Su?")
+	bot.reply_to(message, "Cari apa gan?")
 
 
 """ ================================================================================================== """
