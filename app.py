@@ -74,7 +74,6 @@ def twitterstarted(message):
     checkdata = datatwitter['success']
     if checkdata == True:
         vide_urltwt = datatwitter['data']['data'][0]['link']
-	print('convert :'+vide_urltwt)
         bot.send_video(message.chat.id,vide_urltwt)
     else:
         bot.send_message(message.chat.id, 'URL yg anda masukan salah / tidak valid')
