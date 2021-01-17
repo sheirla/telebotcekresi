@@ -49,6 +49,7 @@ def botstarted(message):
         lokasi_terakhir = datakurir['data']['detail']['history'][0]['position']
         desc_terakhir = datakurir['data']['detail']['history'][0]['desc']
         waktu_terakhir = datakurir['data']['detail']['history'][0]['time']
+	print('checking resi: '+resi_kurir)
         bot.reply_to(message, "RESI : " + resi_kurir + "\nSTATUS : " + status_kurir + "\n===========================" "\nLokasi : " + lokasi_terakhir + "\nDESC : " + desc_terakhir+ "\nWaktu : " + waktu_terakhir)
     except:
         check = datakurir['message']
@@ -73,6 +74,7 @@ def twitterstarted(message):
     checkdata = datatwitter['success']
     if checkdata == True:
         vide_urltwt = datatwitter['data']['data'][0]['link']
+	print(vide_urltwt)
         bot.send_video(message.chat.id,vide_urltwt)
     else:
         bot.send_message(message.chat.id, 'URL yg anda masukan salah / tidak valid')
@@ -96,6 +98,7 @@ def youtubestarted(message):
     datayoutube = responseyoutube.json()
       
     vide_urlyt = datayoutube['data'][0]['video']['url']
+    print(vide_urlyt)
     req = Request(vide_urlyt, headers={'User-Agent': 'Mozilla/5.0'})
     bot.send_message(message.chat.id, 'Video sedang di upload kepada klean..')
     f = open('out.mp4','wb')
@@ -136,6 +139,7 @@ def youtubemp3started(message):
     datayoutubemp3 = responseyoutubemp3.json()
       
     vide_urlytmp3 = datayoutubemp3['url']
+    print(vide_urlytmp3)
     bot.send_message(message.chat.id, 'Klik Download untuk mengunduh Manual', reply_to_message_id=message.message_id,  reply_markup=InlineKeyboardMarkup([
         [InlineKeyboardButton(text='Download mp3', url=''+vide_urlytmp3)],
     ]))
