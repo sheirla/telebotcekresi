@@ -124,7 +124,7 @@ def starttiktok(message):
 
 def tiktokstarted(message):
     tiktokurl = (message.text)
-    urltiktok = "https://snaptik.app/action.php"
+    urltiktok = "https://snaptik.app/action_2021.php"
     urltiktok2 = "https://snaptik.app/check_token.php"
     payloadtiktok='url='+tiktokurl
     headerstiktok = {
