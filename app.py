@@ -128,7 +128,7 @@ def tiktokstarted(message):
     urltiktok2 = "https://snaptik.app/check_token.php"
     payloadtiktok='url='+tiktokurl
     headerstiktok = {
-     'Content-Type': 'application/x-www-form-urlencoded'
+     'Content-Type': 'multipart/form-data'
     }
 
     s = requests.Session()
