@@ -117,39 +117,41 @@ def send_welcome(message):
 
 """ ================================================================================================== """
 @bot.message_handler(commands=['tiktok'])
-def starttiktok(message):
-    global tiktokurl
-    sent3 = bot.send_message(message.chat.id, 'Input URL')
-    bot.register_next_step_handler(sent3, tiktokstarted)
+def send_welcome(message):
+	bot.reply_to(message, "Sedang dalam perbaikan...")
+# def starttiktok(message):
+#     global tiktokurl
+#     sent3 = bot.send_message(message.chat.id, 'Input URL')
+#     bot.register_next_step_handler(sent3, tiktokstarted)
 
-def tiktokstarted(message):
-    tiktokurl = (message.text)
-    urltiktok = "https://snaptik.app/action_2021.php"
-    urltiktok2 = "https://snaptik.app/check_token.php"
-    payloadtiktok='url='+tiktokurl
-    headerstiktok = {
-     'Content-Type': 'multipart/form-data'
-    }
+# def tiktokstarted(message):
+#     tiktokurl = (message.text)
+#     urltiktok = "https://snaptik.app/action_2021.php"
+#     urltiktok2 = "https://snaptik.app/check_token.php"
+#     payloadtiktok='url='+tiktokurl
+#     headerstiktok = {
+#      'Content-Type': 'multipart/form-data'
+#     }
 
-    s = requests.Session()
-    s.post(urltiktok2)
-    responsetiktok = s.post(urltiktok, headers=headerstiktok, data=payloadtiktok)
+#     s = requests.Session()
+#     s.post(urltiktok2)
+#     responsetiktok = s.post(urltiktok, headers=headerstiktok, data=payloadtiktok)
 
-    datatiktok = responsetiktok.text
+#     datatiktok = responsetiktok.text
       
-    soup = BeautifulSoup(datatiktok, "html.parser")
-    datavideomentah = soup.find("a",{"class":"abutton is-success is-fullwidth"})
-    datavideojadi = datavideomentah['href']
-    print(datavideojadi)
-    req = Request(datavideojadi, headers={'User-Agent': 'Mozilla/5.0'})
+#     soup = BeautifulSoup(datatiktok, "html.parser")
+#     datavideomentah = soup.find("a",{"class":"abutton is-success is-fullwidth"})
+#     datavideojadi = datavideomentah['href']
+#     print(datavideojadi)
+#     req = Request(datavideojadi, headers={'User-Agent': 'Mozilla/5.0'})
     
-    f = open('out.mp4','wb')
-    f.write(urlopen(req).read())
-    f.close()
-    bot.send_chat_action(message.chat.id, 'upload_video')
-    img = open('out.mp4', 'rb')
-    bot.send_video(message.chat.id, img, reply_to_message_id=message.message_id)
-    img.close()
-    responsetiktok.close() 
+#     f = open('out.mp4','wb')
+#     f.write(urlopen(req).read())
+#     f.close()
+#     bot.send_chat_action(message.chat.id, 'upload_video')
+#     img = open('out.mp4', 'rb')
+#     bot.send_video(message.chat.id, img, reply_to_message_id=message.message_id)
+#     img.close()
+#     responsetiktok.close() 
 
 bot.polling(none_stop=True)
