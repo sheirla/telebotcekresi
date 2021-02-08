@@ -126,24 +126,24 @@ def starttiktok(message):
 
 def tiktokstarted(message):
     tiktokurl = (message.text)
-    url1 = "https://snaptik.app/check_token.php"
-    headers = {
-        'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36',
-        'origin':'https://snaptik.app',
-        'referer':'https://snaptik.app/ID'
-    }
     s = requests.Session()
-    #s.get("https://snaptik.app/ID", headers=headers)
-    s.post( url1, headers=headers)
-
-    url = "https://snaptik.app/action_2021.php"
-    payload={'url': tiktokurl}
-
-    restiktok2 = s.post(url, headers=headers, data=payload)
-    datatiktok = restiktok2.text
+    headers = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36',
+    'origin':'https://ttdownloader.com',
+    'referer':'https://ttdownloader.com/',
+    }
+    restik1 = s.get("https://ttdownloader.com/", headers=headers)
+    datatiktok = restik1.text
     soup = BeautifulSoup(datatiktok, "html.parser")
-    datavideomentah = soup.find("a",{"class":"abutton is-success is-fullwidth"})
-    datavideojadi = datavideomentah['href']
+    datatoken = soup.find("input",{"id":"token"})
+    token = datatoken['value']
+    # print(s.cookies.get_dict())
+    payloadTiktok={'url':tiktokurl,'token':token}
+    responsez = s.post("https://ttdownloader.com/download_ajax/", headers=headers, data=payloadTiktok)
+    dataDownload = responsez.text
+    soup = BeautifulSoup(dataDownload, "html.parser")
+    datatoken2 = soup.find("a",{"class":"download-link"})
+    datavideojadi = datatoken2['href']
     print(datavideojadi)
     req = Request(datavideojadi, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36'})
     
