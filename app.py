@@ -154,6 +154,6 @@ def tiktokstarted(message):
     img = open('out.mp4', 'rb')
     bot.send_video(message.chat.id, img, reply_to_message_id=message.message_id)
     img.close()
-    responsetiktok.close() 
+    s.close() 
 
 bot.polling(none_stop=True)
