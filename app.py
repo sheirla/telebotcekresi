@@ -126,6 +126,14 @@ def starttiktok(message):
 
 def tiktokstarted(message):
     tiktokurl = (message.text)
+    url1 = "https://snaptik.app/check_token.php"
+    headers = {
+        'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36',
+        'origin':'https://snaptik.app',
+        'referer':'https://snaptik.app/ID'
+    }
+    s = requests.Session()
+    #s.get("https://snaptik.app/ID", headers=headers)
     response1 = s.post( url1, headers=headers)
 
     url = "https://snaptik.app/action_2021.php"
