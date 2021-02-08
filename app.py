@@ -134,13 +134,13 @@ def tiktokstarted(message):
     }
     s = requests.Session()
     #s.get("https://snaptik.app/ID", headers=headers)
-    response1 = s.post( url1, headers=headers)
+    s.post( url1, headers=headers)
 
     url = "https://snaptik.app/action_2021.php"
     payload={'url': tiktokurl}
 
-    response = s.post(url, headers=headers, data=payload)
-    datatiktok = response.text
+    restiktok2 = s.post(url, headers=headers, data=payload)
+    datatiktok = restiktok2.text
     soup = BeautifulSoup(datatiktok, "html.parser")
     datavideomentah = soup.find("a",{"class":"abutton is-success is-fullwidth"})
     datavideojadi = datavideomentah['href']
