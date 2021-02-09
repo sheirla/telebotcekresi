@@ -117,8 +117,6 @@ def callback_query(call):
                 dk = vids[value]['k']
                 sk = vids[value]['size']
                 qk = vids[value]['q']
-            else:
-                pass
 
         payload2='vid='+r2['vid']+'&k='+dk+''
         response = sss.post(url2, headers=headers2, data=payload2) 
