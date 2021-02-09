@@ -79,40 +79,108 @@ def twitterstarted(message):
         bot.send_message(message.chat.id, 'URL yg anda masukan salah / tidak valid')
 
 """ ================================================================================================== """
+def gen_markup_yt():
+    markup = InlineKeyboardMarkup()
+    markup.row_width = 2
+    markup.add(InlineKeyboardButton("mp4", callback_data="cb_mp4"),
+                               InlineKeyboardButton("mp3", callback_data="cb_mp3"))
+    return markup
+
 @bot.message_handler(commands=['youtube'])
-def startyoutube(message):
-    global youtubeurl
+def startyt(message):
     sent4 = bot.send_message(message.chat.id, 'Input URL')
     bot.register_next_step_handler(sent4, youtubestarted)
 
 def youtubestarted(message):
-    youtubeurl = (message.text)
-    
-    payloadyoutube='url='+youtubeurl
-    headersyt = {
-    'Content-Type': 'application/x-www-form-urlencoded'
-    }
-    responseyoutube = requests.request("POST", urlyoutube, headers=headersyt, data=payloadyoutube)
+    rr = message.text
+    bot.send_message(message.chat.id, rr, reply_markup=gen_markup_yt())
 
-    datayoutube = responseyoutube.json()
-      
-    vide_urlyt = datayoutube['data'][0]['video']['url']
-    print(vide_urlyt)
-    req = Request(vide_urlyt, headers={'User-Agent': 'Mozilla/5.0'})
-    bot.send_message(message.chat.id, 'Video sedang di upload kepada klean..')
-    f = open('out.mp4','wb')
-    f.write(urlopen(req).read())
-    f.close()
-    bot.send_chat_action(message.chat.id, 'upload_video')
-    img = open('out.mp4', 'rb')
-    bot.send_video(message.chat.id, img, reply_to_message_id=message.message_id)
-    bot.send_message(message.chat.id, 'Video selesai terupload kepada klean..')
-    img.close()
-    responseyoutube.close() 
+@bot.callback_query_handler(func=lambda call: True)
+def callback_query(call):
+
+    rrl = call.message.text
+    url = "https://yt1s.com/api/ajaxSearch/index"
+    url2 = "https://yt1s.com/api/ajaxConvert/convert"
+    if call.data == "cb_mp4":
+        payload1='q='+rrl+'&vt=home'
+        headers2 = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'origin':'https://yt1s.com',
+        'referer':'https://yt1s.com/',
+        }
+        sss = requests.Session()
+        response2 = sss.post(url, headers=headers2, data=payload1)
+        r2 = response2.json()
+        vids = r2['links']['mp4']
+        for value in vids:
+            if vids[value]['q'] == "360p":
+                dk = vids[value]['k']
+                sk = vids[value]['size']
+                qk = vids[value]['q']
+            else:
+                pass
+
+        payload2='vid='+r2['vid']+'&k='+dk+''
+        response = sss.post(url2, headers=headers2, data=payload2) 
+        arr = response.json()
+        dlink = arr['dlink']
+        print(dlink)
+        resultt = arr['title']+'\n'+qk+'\n'+sk+'\n'+arr['c_status']
+        bot.send_message(call.message.chat.id, resultt) 
+        
+        req = Request(dlink, headers={'User-Agent': 'Mozilla/5.0'})
+        bot.send_message(call.message.chat.id, 'Video sedang di Upload..')
+        f = open('out.mp4','wb')
+        f.write(urlopen(req).read())
+        f.close()
+        bot.send_chat_action(call.message.chat.id, 'upload_video')
+        mp4 = open('out.mp4', 'rb')
+        bot.send_video(call.message.chat.id, mp4, reply_to_message_id=call.message.message_id)
+        bot.send_message(call.message.chat.id, 'Video Selsai di Upload..')
+        mp4.close()
+        sss.close()
+# MP3
+    if call.data == "cb_mp3":
+        payloadmp31='q='+rrl+'&vt=home'
+        headers2z = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'origin':'https://yt1s.com',
+        'referer':'https://yt1s.com/',
+        }
+        sssmp3 = requests.Session()
+        responsemp32 = sssmp3.post(url, headers=headers2z, data=payloadmp31)
+        r2z = responsemp32.json()
+        vidsz = r2z['links']['mp3']
+        for valuez in vidsz:
+                dkz = vidsz[valuez]['k']
+                skz = vidsz[valuez]['size']
+                qkz = vidsz[valuez]['q']
+
+
+        payloadmp32='vid='+r2z['vid']+'&k='+dkz+''
+        responsemp3 = sssmp3.post(url2, headers=headers2z, data=payloadmp32) 
+        arr2 = responsemp3.json()
+        dlinkmp3 = arr2['dlink']
+        print(dlinkmp3)
+        resulttmp3 = arr2['title']+'\n'+qkz+'\n'+skz+'\n'+arr2['c_status']
+        bot.send_message(call.message.chat.id, resulttmp3) 
+        
+        reqz = Request(dlinkmp3, headers={'User-Agent': 'Mozilla/5.0'})
+        bot.send_message(call.message.chat.id, 'Audio sedang di Upload kepada klean..')
+        f = open('out.mp3','wb')
+        f.write(urlopen(reqz).read())
+        f.close()
+        bot.send_chat_action(call.message.chat.id, 'upload_audio')
+        mp3 = open('out.mp3', 'rb')
+        bot.send_audio(call.message.chat.id, mp3, reply_to_message_id=call.message.message_id)
+        bot.send_message(call.message.chat.id, 'Audio Selesai di Upload..')
+        mp3.close()
+        sssmp3.close() 
+
 """ ================================================================================================== """
 @bot.message_handler(commands=['ytmp3'])
 def send_welcome(message):
-	bot.reply_to(message, "Sedang dalam perbaikan")
+	bot.reply_to(message, "Gunakan /youtube")
  
 
 """ ================================================================================================== """
